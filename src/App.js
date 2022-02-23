@@ -33,9 +33,21 @@ function App() {
   return (
     <div className="App">
       <h1>Magic Match</h1>
+      <img src= "/public/img/avocado.png" alt= ""/>
       <button onClick={shuffleCards}>New Game</button>
+      <div className="card-grid">
+        {cards.map(card => (
+          <div className="card" key= {card.id}>
+            <div>
+              <img className= "front" scr={card.src} alt= "card front"/>
+              <img className= "back" scr= {require("./img/cover.png")} alt= "card back"/>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
 
 export default App
+
