@@ -30,46 +30,41 @@ function App() {
   };
 
   //handle a choice
-    //if choice one is null, set state of choiceOne with card,
+  //if choice one is null, set state of choiceOne with card,
   //otherwise set state of choiceTwo with card
   const handleChoice = (card) => {
-  choiceOne ? setChoiceTwo(card) : setChoiceOne(card)
+    choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
   };
 
   //reset choices and increase turns
   const resetTurn = () => {
-    setChoiceOne(null)
-    setChoiceTwo(null)
-    setTurns(prevTurns => prevTurns + 1);
+    setChoiceOne(null);
+    setChoiceTwo(null);
+    setTurns((prevTurns) => prevTurns + 1);
   };
 
   //compare two selected cards
   useEffect(() => {
-
     if (choiceOne && choiceTwo) {
-
       if (choiceOne.src === choiceTwo.src) {
         //set cards state
-        setCards( prevCards => {
+        setCards((prevCards) => {
           //because we want to change one value of state, we can map over the state array
-          return prevCards.map( card => {
+          return prevCards.map((card) => {
             if (card.src === choiceOne.src) {
               //and change only the matched value if there is a match
-              return {...card, matched : true}
+              return { ...card, matched: true };
             } else {
-              return card
+              return card;
             }
-          })
-        })
-        resetTurn()
+          });
+        });
+        resetTurn();
       } else {
-        
-        resetTurn()
+        resetTurn();
       }
-
-  };
-
-  }, [choiceOne, choiceTwo])
+    }
+  }, [choiceOne, choiceTwo]);
 
   return (
     <div className="App">
@@ -77,7 +72,12 @@ function App() {
       <button onClick={shuffleCards}>New Game</button>
       <div className="card-grid">
         {cards.map((card) => (
-          <SingleCard key={card.id} card={card} handleChoice={handleChoice} />
+          <SingleCard
+            key={card.id}
+            card={card}
+            handleChoice={handleChoice}
+            flipped={card === choiceOne || card === choiceTwo || card.matched}
+          />
         ))}
       </div>
     </div>
