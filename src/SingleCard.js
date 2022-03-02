@@ -1,16 +1,25 @@
 import "./single-card.css";
 
-function SingleCard({ card }) {
+function SingleCard({ card, handleChoice }) {
 
-  return(
+  const handleClick = () => {
+    console.log("handleClick card", card)
+    handleChoice(card)
+  }
+
+  return (
     <div className="card" key={card.id}>
-    <div>
-      <img className= "front" src={card.src} alt= "card front"/>
-      <img className= "back" src="/images/cover.png" alt= "card back"/>
+      <div>
+        <img className="front" src={card.src} alt="card front" />
+        <img
+          className="back"
+          src="/images/cover.png"
+          onClick={handleClick}
+          alt="card back"
+        />
+      </div>
     </div>
-  </div>
   );
-
-};
+}
 
 export default SingleCard;

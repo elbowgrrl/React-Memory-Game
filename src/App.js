@@ -1,49 +1,90 @@
 // Started with node version 16.3.1
 // run in dev mode with npm run start
-import { useState } from 'react';
-import './App.css';
+import { useEffect, useState } from "react";
+import "./App.css";
 import SingleCard from "./SingleCard";
 
 const cardImages = [
-  {"src": "/images/avocado.png"},
-  {"src": "/images/blueberry.png"},
-  {"src": "/images/kiwi.png"},
-  {"src": "/images/strawberry.png"},
-  {"src": "/images/tomato.png"},
-  {"src": "/images/watermelon.png"}
-]
+  { src: "/images/avocado.png", matched: false },
+  { src: "/images/blueberry.png", matched: false },
+  { src: "/images/kiwi.png", matched: false },
+  { src: "/images/strawberry.png", matched: false },
+  { src: "/images/tomato.png", matched: false },
+  { src: "/images/watermelon.png", matched: false },
+];
 
 function App() {
-
-  const [cards, setCards] = useState([])
-  const [turns, setTurns] = useState(0)
+  const [cards, setCards] = useState([]);
+  const [turns, setTurns] = useState(0);
+  const [choiceOne, setChoiceOne] = useState(null);
+  const [choiceTwo, setChoiceTwo] = useState(null);
 
   //shuffle cards and add id to each card
   const shuffleCards = () => {
-
     const shuffledCards = [...cardImages, ...cardImages]
-    .sort(() => Math.random() - 0.5)
-    .map((card) => ({ ...card, id : Math.random() }));
+      .sort(() => Math.random() - 0.5)
+      .map((card) => ({ ...card, id: Math.random() }));
 
     setCards(shuffledCards);
     setTurns(0);
-
-    console.log("cards", cards);
-    console.log("turns", turns);
   };
+
+  //handle a choice
+    //if choice one is null, set state of choiceOne with card,
+  //otherwise set state of choiceTwo with card
+  const handleChoice = (card) => {
+  choiceOne ? setChoiceTwo(card) : setChoiceOne(card)
+  };
+
+  //reset choices and increase turns
+  const resetTurn = () => {
+    setChoiceOne(null)
+    setChoiceTwo(null)
+    setTurns(prevTurns => prevTurns + 1);
+  };
+
+  //compare two selected cards
+  useEffect(() => {
+
+    if (choiceOne && choiceTwo) {
+
+      if (choiceOne.src === choiceTwo.src) {
+        //set cards state
+        setCards( prevCards => {
+          //because we want to change one value of state, we can map over the state array
+          return prevCards.map( card => {
+            if (card.src === choiceOne.src) {
+              //and change only the matched value if there is a match
+              return {...card, matched : true}
+            } else {
+              return card
+            }
+          })
+        })
+        resetTurn()
+      } else {
+        
+        resetTurn()
+      }
+      console.log("turns", turns)
+  };
+
+  }, [choiceOne, choiceTwo])
+
+  console.log("cards", cards)
+
 
   return (
     <div className="App">
       <h1>Magic Match</h1>
       <button onClick={shuffleCards}>New Game</button>
       <div className="card-grid">
-        {cards.map(card => (
-         <SingleCard key={card.id} card={card}/>
+        {cards.map((card) => (
+          <SingleCard key={card.id} card={card} handleChoice={handleChoice} />
         ))}
       </div>
     </div>
   );
 }
 
-export default App
-
+export default App;
