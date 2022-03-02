@@ -66,13 +66,10 @@ function App() {
         
         resetTurn()
       }
-      console.log("turns", turns)
+
   };
 
   }, [choiceOne, choiceTwo])
-
-  console.log("cards", cards)
-
 
   return (
     <div className="App">

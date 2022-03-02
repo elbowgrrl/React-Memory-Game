@@ -3,7 +3,6 @@ import "./single-card.css";
 function SingleCard({ card, handleChoice }) {
 
   const handleClick = () => {
-    console.log("handleClick card", card)
     handleChoice(card)
   }
 
