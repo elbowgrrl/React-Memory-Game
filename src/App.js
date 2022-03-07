@@ -11,6 +11,8 @@ const cardImages = [
   { src: "/images/strawberry.png", matched: false },
   { src: "/images/tomato.png", matched: false },
   { src: "/images/watermelon.png", matched: false },
+  { src: "/images/melon.png", matched: false },
+  { src: "/images/apple.png", matched: false },
 ];
 
 function App() {
@@ -80,7 +82,8 @@ function App() {
   return (
     <div className="App">
       <h1>Memory Match</h1>
-      <button onClick={shuffleCards}>New Game</button>
+      <span><button onClick={shuffleCards}>New Game</button></span>
+      <p>Turns Taken: {turns}</p>
       <div className="card-grid">
         {cards.map((card) => (
           <SingleCard
@@ -92,7 +95,7 @@ function App() {
           />
         ))}
       </div>
-      <p>Turns Taken: {turns}</p>
+      
     </div>
   );
 }
